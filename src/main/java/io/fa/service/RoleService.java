@@ -15,7 +15,14 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
-    public Optional<Role> findByName(RolesEnum roleName){
+    /**
+     * Finds a Role From the Static ReleEnum
+     * 
+     * @param roleName Detail or Role required
+     * @return The Matching Role from the datastore
+     * 
+     */
+    public Optional<Role> findByName(RolesEnum roleName) {
         return roleRepository.findByName(roleName);
     }
 

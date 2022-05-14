@@ -1,6 +1,7 @@
 package io.fa.models;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "users", 
@@ -19,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonProperty("passengerId")
   private Long id;
 
   @NotBlank
@@ -47,7 +50,15 @@ public class User {
   @JoinTable(  name = "user_roles", 
         joinColumns = @JoinColumn(name = "user_id"), 
         inverseJoinColumns = @JoinColumn(name = "role_id"))
+  @JsonIgnore
   private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Booking> bookings;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Flight> flights;
 
   public User(){}
 
@@ -125,4 +136,22 @@ public class User {
   public void setRoles(Set<Role> roles) {
     this.roles = roles;
   }
+
+
+  public List<Booking> getBookings() {
+    return this.bookings;
+  }
+
+  public void setBookings(List<Booking> bookings) {
+    this.bookings = bookings;
+  }
+
+  public List<Flight> getFlights() {
+    return this.flights;
+  }
+
+  public void setFlights(List<Flight> flights) {
+    this.flights = flights;
+  }
+  
 }
