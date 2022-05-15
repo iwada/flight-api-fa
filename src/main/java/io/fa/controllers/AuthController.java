@@ -1,11 +1,9 @@
 package io.fa.controllers;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
-
 
 import io.fa.payload.response.JwtResponse;
 import io.fa.payload.response.MessageResponse;
@@ -55,7 +53,7 @@ public class AuthController {
 
   @Autowired
   private UserService userService;
-  
+
   @PostMapping("/signin")
   public ResponseEntity<Object> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -64,17 +62,17 @@ public class AuthController {
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
     String jwt = jwtUtils.generateJwtToken(authentication);
-    
+
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
     List<String> roles = userDetails.getAuthorities().stream()
         .map(GrantedAuthority::getAuthority)
         .collect(Collectors.toList());
 
     return ResponseEntity.ok(new JwtResponse(jwt,
-                         userDetails.getId(), 
-                         userDetails.getUsername(), 
-                         userDetails.getEmail(), 
-                         roles));
+        userDetails.getId(),
+        userDetails.getUsername(),
+        userDetails.getEmail(),
+        roles));
   }
 
   @PostMapping("/signup")
@@ -84,17 +82,14 @@ public class AuthController {
           .badRequest()
           .body(new MessageResponse("Error: Username or Email is already taken!"));
     }
-    User user = new User(signUpRequest.getUsername(), 
-                signUpRequest.getEmail(), signUpRequest.getPassword(),
-                signUpRequest.getFirstName(),signUpRequest.getLastName());
+    User user = new User(signUpRequest.getUsername(),
+        signUpRequest.getEmail(), signUpRequest.getPassword(),
+        signUpRequest.getFirstName(), signUpRequest.getLastName());
 
-    if (userService.saveUser(user,signUpRequest.getRole())){
+    if (userService.saveUser(user, signUpRequest.getRole())) {
       return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new MessageResponse("User Registratoin Failed"));
 
-
-
-    
   }
 }
