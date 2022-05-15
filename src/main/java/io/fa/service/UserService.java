@@ -138,11 +138,38 @@ public class UserService {
     Predicate<Flight> searchParams = e -> !Objects.equals(e.getFlightNumber(), flightNumber) &&
         !Objects.equals(e.getDepartureDate(), departureDate);
     List<User> userDetails = userRepository.findAll();
-    userDetails
-        .forEach(booking -> booking.getBookings().removeIf(flight -> flight.getFlights().removeIf(searchParams)));
+    userDetails.forEach(user -> 
+                user.getBookings().forEach(booking -> 
+                booking.getFlights().removeIf(searchParams))
+              );
     return userDetails;
   }
 
+  /**
+   * Returns the booking details(including flights) for All Avaliable users
+   * matching the passed in parameters
+   * A Single database call is made, and the list is filtered inplace for better
+   * perfoamce.
+   * 
+   * @param flightNumber  a flight Number for which the booking details would be
+   *                      needed
+   * @param departureDate a departure date for which the booking details would be
+   *                      needed
+   * @return Returns a filtered list matching the required critetia.
+   * 
+   */
+  public List<User> test(String flightNumber, String departureDate){
+    Predicate<Flight> flightToRemove = e -> !flightNumber.equals(e.getFlightNumber()) && !departureDate.equals(e.getDepartureDate());
+
+
+              
+             List<User> allUsers = userRepository.findAll();
+              allUsers.forEach(user -> 
+                user.getBookings().forEach(booking -> 
+                booking.getFlights().removeIf(flightToRemove))
+              );
+              return allUsers;
+  }
   public User findById(Long id) {
     return userRepository.findById(id).orElse(null);
   }
