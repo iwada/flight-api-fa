@@ -66,6 +66,12 @@ public class Flight {
   @JsonIgnore
   private User user;
 
-
+  public Flight(String departureAirport, String arrivalAirport, String departureDate, String arrivalDate){
+    this.departureAirport = departureAirport;
+    this.arrivalAirport = arrivalAirport;
+    this.departureDate = departureDate;
+    this.arrivalDate = arrivalDate;
+  }
+	
 	
 }
