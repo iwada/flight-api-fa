@@ -39,3 +39,5 @@ build/
 .vscode/
 .DS_Store/
 **/.DS_Store
+mvnw
+mvnw.cmd
