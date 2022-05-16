@@ -4,6 +4,8 @@ package io.fa.controllers;
 
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,9 @@ public class UserController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> showPassengerDetails(@RequestParam("flightNumber") String flightNumber,
             @RequestParam("departureDate") String departureDate) {
+                // Never Trust user input. Sanitize!
+                 flightNumber = Jsoup.clean(flightNumber, Safelist.basic());
+                 departureDate = Jsoup.clean(departureDate, Safelist.basic());
                 List<User> userDetails = userService.getUserBookingDetails(flightNumber,departureDate);
                 return new ResponseEntity<>(userDetails, HttpStatus.OK);
         
