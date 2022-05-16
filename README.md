@@ -7,8 +7,8 @@
 
 ## Setup
 
-- `git clone` this repository\
-- Set values for environment variables  `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` with respective values. \
+- `git clone` this repository
+- Set values for environment variables  `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` with respective values.
 - Execute `mvn spring-boot:run` from the root of the project
 
 ## Seed data & Testing
