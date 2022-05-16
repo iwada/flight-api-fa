@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @Service
@@ -119,10 +120,22 @@ public class BookingService {
      */
     public boolean saveBooking(String booking, List<Flight> flights, User user, Carrier carrier) {
         Booking _booking = new Booking(booking);
-        flights.stream().forEach(u -> {
-            u.setFlightNumber(carrier.getCarrierCode() + random.nextInt(1000));
-            u.setUser(user);
-        });
+        for (int i = 0; i < flights.size(); i++) {
+            Flight previousFlight = flights.get(i);
+            if (i < flights.size() - 1) {
+                Flight nextFlight = flights.get(i + 1);
+                if (Objects.equals(previousFlight.getArrivalAirport(), nextFlight.getArrivalAirport())) {
+                    previousFlight.setConnectingFlight(true);
+                }
+            }
+            previousFlight.setFlightNumber(carrier.getCarrierCode() + random.nextInt(1000));
+            previousFlight.setUser(user);
+        }
+        // flights.stream().forEach(u -> {
+        // u.setFlightNumber(carrier.getCarrierCode() + random.nextInt(1000));
+        // u.setUser(user);
+
+        // });
         _booking.setCarrier(carrier);
         _booking.setFlights(flights);
         _booking.setUser(user);

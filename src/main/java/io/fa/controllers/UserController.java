@@ -42,11 +42,11 @@ public class UserController {
     @GetMapping("/passengers")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> showPassengerDetails(@RequestParam("flightNumber") String flightNumber,
-            @RequestParam("departureDate") String departureDate) {
+            @RequestParam("departureDate") String departureDate, @RequestParam(value="connectingFlights", required=false)String connectingFlights) {
                 // Never Trust user input. Sanitize!
                  flightNumber = Jsoup.clean(flightNumber, Safelist.basic());
                  departureDate = Jsoup.clean(departureDate, Safelist.basic());
-                List<User> userDetails = userService.getUserBookingDetails(flightNumber,departureDate);
+                List<User> userDetails = userService.getUserBookingDetails(flightNumber,departureDate,connectingFlights);
                 return new ResponseEntity<>(userDetails, HttpStatus.OK);
         
     }
@@ -76,5 +76,7 @@ public class UserController {
                 user.getBookings()));
 
     }
+
+    
 
 }

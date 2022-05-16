@@ -21,6 +21,8 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import org.springframework.lang.Nullable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,6 +59,9 @@ public class Flight {
   private String arrivalDate;
 
 
+  private boolean connectingFlight;
+
+
   @ManyToMany(mappedBy = "flights", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JsonIgnoreProperties("flights")
   @JsonIgnore
@@ -67,6 +72,8 @@ public class Flight {
   @JoinColumn(name="user_id", referencedColumnName = "id")
   @JsonIgnore
   private User user;
+
+
 
   public Flight(String departureAirport, String arrivalAirport, String departureDate, String arrivalDate){
     this.departureAirport = departureAirport;
