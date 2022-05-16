@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -33,25 +34,25 @@ public class Flight {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotBlank
+
   @Size(max = 60)
   private String flightNumber;
 
 
-  @NotBlank
+  @NotBlank(message = "departureAirport is required")
   @Size(max = 3)
   private String departureAirport;
 
 
-  @NotBlank
+  @NotBlank(message = "arrivalAirport is required")
   @Size(max = 3)
   private String arrivalAirport;
 
-  @NotBlank
+  @NotBlank(message = "departureDate is required")
   @Size(max = 20)
   private String departureDate;
 
-  @NotBlank
+  @NotBlank(message = "arrivalDate is required")
   @Size(max = 20)
   private String arrivalDate;
 
@@ -59,6 +60,7 @@ public class Flight {
   @ManyToMany(mappedBy = "flights", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JsonIgnoreProperties("flights")
   @JsonIgnore
+  @Valid
   private List<Booking> bookings ;
 
   @OneToOne
